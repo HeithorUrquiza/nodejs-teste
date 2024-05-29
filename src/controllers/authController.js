@@ -8,7 +8,7 @@ class AuthController {
     try {
       const login = await authService.login(body);
 
-      return res.status(201).json(login);
+      return res.status(200).json(login);
     } catch (err) {
       return res.status(500).json(err.message);
     }

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import jsonwebtoken from 'jsonwebtoken';
 import constants from '../config/constants.js';
 import Usuario from '../models/usuario.js';
