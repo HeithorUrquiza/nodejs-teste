@@ -1,3 +1,6 @@
+/* eslint-disable no-const-assign */
+/* eslint-disable no-param-reassign */
+/* eslint-disable class-methods-use-this */
 import bcryptjs from 'bcryptjs';
 import jsonwebtoken from 'jsonwebtoken';
 import Usuario from '../models/usuario.js';
@@ -9,7 +12,7 @@ class AuthService {
       if (!data.email) {
         throw new Error('O email do usuario é obrigatório.');
       }
-  
+
       if (!data.senha) {
         throw new Error('A senha de usuario é obrigatório.');
       }
@@ -40,11 +43,19 @@ class AuthService {
   }
 
   async cadastrarUsuario(data) {
-    data.senha = await bcryptjs.hash(data.senha, 8);
-    
-    const usuario = new Usuario(data);
     try {
-      const resposta = await usuario.salvar(usuario);
+      if (!data.senha) {
+        throw new Error('A senha de usuario é obrigatório.');
+      }
+      data.senha = await bcryptjs.hash(data.senha, 8);
+
+      const usuario = await Usuario.pegarPeloEmail(data.email);
+      if (usuario) {
+        throw new Error('O email já esta cadastrado!');
+      }
+
+      const novoUsuario = new Usuario(data);
+      const resposta = await novoUsuario.salvar(novoUsuario);
       return { message: 'usuario criado', content: resposta };
     } catch (err) {
       throw new Error(err.message);

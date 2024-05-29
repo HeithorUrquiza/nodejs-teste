@@ -16,7 +16,7 @@ class AuthController {
 
   static cadastrarUsuario = async (req, res) => {
     const { body } = req;
-    
+
     try {
       const usuario = await authService.cadastrarUsuario(body);
 
